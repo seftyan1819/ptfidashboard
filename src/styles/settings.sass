@@ -1,0 +1,18 @@
+/**
+ * src/styles/settings.scss
+ *
+ * Configures SASS variables and Vuetify overwrites
+ */
+
+
+// https://vuetifyjs.com/features/sass-variables/`
+@use 'vuetify/settings' with (
+  // $color-pack: false,
+  $body-font-family: ('Inter', sans-serif),
+)
+
+.primary-shadow
+  box-shadow: 0 0 5px rgb(var(--v-theme-primary)) !important
+
+.error-shadow
+  box-shadow: 0 0 5px rgb(var(--v-theme-error)) !important
