@@ -93,6 +93,7 @@ export const getAnalyticCopperCathodeCount = ( filter: {
 export const getAnalyticCopperCathodeChart = ( filter: {
   start_date: string
   end_date: string
+  types: string
 }) =>
   api.get<{
     receive_email: number;
@@ -122,6 +123,7 @@ export const getAnalyticCopperCathodeChart = ( filter: {
 export const getAnalyticByProductChart = ( filter: {
   start_date: string
   end_date: string
+  types: string
 }) =>
   api.get<{
     receive_supdoc: number;

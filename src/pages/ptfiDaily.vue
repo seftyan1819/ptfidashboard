@@ -30,8 +30,8 @@
   import messageCheckIcon from '@/assets/icon/message-check.svg';
 
   const { datetime } = useCurrentTime()
-  const firstDateOfMonth = '2025-08-01';
-  // const firstDateOfMonth = dayjs(new Date()).startOf('month').format('YYYY-MM-DD');
+  // const firstDateOfMonth = '2025-08-01';
+  const firstDateOfMonth = dayjs(new Date()).startOf('month').format('YYYY-MM-DD');
   const currentDate = dayjs(new Date()).format('YYYY-MM-DD');
 
   const countDataCustomInProgress = ref()
@@ -145,6 +145,7 @@
   ]);
   
   const shipmentTypes = [
+    'All',
     'Domestic',
     'Export',
   ]
@@ -238,10 +239,46 @@ const cellProps = ({ item, column }: { item: Record<string, any>, column: any })
   const aggregateShipmentHeader: VDataTable['$props']['headers'] = [
     { key: 'items', title: 'Items', align: 'center', sortable: false },
     { key: 'grand_total', title: 'Grand Total', align: 'center', sortable: false },
-    { key: 'copper_cathode_amount', title: 'Copper Cathode', align: 'center', sortable: false },
-    { key: 'slag_amount', title: 'Slag', align: 'center', sortable: false },
-    { key: 'gypsum_amount', title: 'Gypsum', align: 'center', sortable: false },
-    { key: 'acid_amount', title: 'Acid', align: 'center', sortable: false },
+    { 
+      key: 'copper_cathode_amount', 
+      title: 'Copper Cathode', 
+      align: 'center', 
+      sortable: false,
+      value: (item) => Number(item.copper_cathode_amount).toLocaleString('en-US', { 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 2 
+      })
+    },
+    { 
+      key: 'slag_amount', 
+      title: 'Slag', 
+      align: 'center', 
+      sortable: false,
+      value: (item) => Number(item.slag_amount).toLocaleString('en-US', { 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 2 
+      })
+    },
+    { 
+      key: 'gypsum_amount', 
+      title: 'Gypsum', 
+      align: 'center', 
+      sortable: false,
+      value: (item) => Number(item.gypsum_amount).toLocaleString('en-US', { 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 2 
+      })
+    },
+    { 
+      key: 'acid_amount', 
+      title: 'Acid', 
+      align: 'center', 
+      sortable: false,
+      value: (item) => Number(item.acid_amount).toLocaleString('en-US', { 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 2 
+      })
+    },
   ]
   // AGGREGATE SHIPMENT TABLE
 
@@ -714,6 +751,7 @@ const cellProps = ({ item, column }: { item: Record<string, any>, column: any })
     const response = await getAnalyticCopperCathodeChart({
       start_date: filterAnalyticCopperCathode.startDate,
       end_date: filterAnalyticCopperCathode.endDate,
+      types: filterAnalyticCopperCathode.types
     });
 
      // Update data reactively
@@ -733,6 +771,7 @@ const cellProps = ({ item, column }: { item: Record<string, any>, column: any })
     const response = await getAnalyticByProductChart({
       start_date: filterAnalyticByProduct.startDate,
       end_date: filterAnalyticByProduct.endDate,
+      types: filterAnalyticByProduct.types,
     });
 
      // Update data reactively
@@ -835,7 +874,11 @@ const cellProps = ({ item, column }: { item: Record<string, any>, column: any })
                 </tr>
               </template>
               <template #item.grand_total="{ item }">
-                  {{ (Number(item.copper_cathode_amount) || 0) + (Number(item.slag_amount) || 0) + (Number(item.gypsum_amount) || 0) + (Number(item.acid_amount) || 0)}}
+                  {{ ( (Number(item.copper_cathode_amount) || 0) 
+                        + (Number(item.slag_amount) || 0) 
+                        + (Number(item.gypsum_amount) || 0) 
+                        + (Number(item.acid_amount) || 0) 
+                    ).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
               </template>
             </VDataTableServer>
           </VCard>
@@ -925,7 +968,12 @@ const cellProps = ({ item, column }: { item: Record<string, any>, column: any })
               </template>
 
               <template #item.grand_total="{ item }">
-                  {{ (Number(item.copper_cathode_amount) || 0) + (Number(item.slag_amount) || 0) + (Number(item.gypsum_amount) || 0) + (Number(item.acid_amount) || 0)}}
+                  {{ ( 
+                        (Number(item.copper_cathode_amount) || 0) 
+                        + (Number(item.slag_amount) || 0) 
+                        + (Number(item.gypsum_amount) || 0) 
+                        + (Number(item.acid_amount) || 0) 
+                    ).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}}
               </template>
             </VDataTableServer>
           </VCard>
