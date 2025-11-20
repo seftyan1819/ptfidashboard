@@ -177,18 +177,35 @@
   })
 
   const onUpdateTableOptionsCustomInProgress = (options: typeof tableFilterCustomInProgress) => {
-    tableFilter.itemsPerPage = options.itemsPerPage
-    tableFilter.page = options.page
+    tableFilterCustomInProgress.itemsPerPage = options.itemsPerPage
+    tableFilterCustomInProgress.page = options.page
   }
 
   const tableCustomInProgress = useQuery({
     key: () => ['custom-in-progress', tableFilterCustomInProgress],
-    query: async () => await getCustomInProgress({
-      limit: tableFilterCustomInProgress.itemsPerPage,
-      offset: (tableFilterCustomInProgress.page - 1) * tableFilterCustomInProgress.itemsPerPage,
-      search: tableFilterCustomInProgress.search,
-      filter_by: tableFilterCustomInProgress.filterBy,
-    }),
+    // query: async () => await getCustomInProgress({
+    //   limit: tableFilterCustomInProgress.itemsPerPage,
+    //   offset: (tableFilterCustomInProgress.page - 1) * tableFilterCustomInProgress.itemsPerPage,
+    //   search: tableFilterCustomInProgress.search,
+    //   filter_by: tableFilterCustomInProgress.filterBy,
+    // }),
+    query: async () => {
+      const limit = tableFilterCustomInProgress.itemsPerPage === -1 
+        ? undefined 
+        : tableFilterCustomInProgress.itemsPerPage
+
+      const offset = limit 
+        ? (tableFilterCustomInProgress.page - 1) * limit
+        : 0
+
+      return await getCustomInProgress({
+        limit,
+        offset,
+        search: tableFilterCustomInProgress.search,
+        filter_by: tableFilterCustomInProgress.filterBy,
+      })
+    }
+    
   })
   
   const customInProgressHeader: VDataTable['$props']['headers'] = [
@@ -267,12 +284,28 @@
 
   const tableCustomInProgressBP = useQuery({
     key: () => ['custom-in-progress-by-product', tableFilterCustomInProgressBP],
-    query: async () => await getCustomInProgressByProduct({
-      limit: tableFilterCustomInProgressBP.itemsPerPage,
-      offset: (tableFilterCustomInProgressBP.page - 1) * tableFilterCustomInProgressBP.itemsPerPage,
-      search: tableFilterCustomInProgressBP.search,
-      filter_by: tableFilterCustomInProgressBP.filterBy,
-    }),
+    // query: async () => await getCustomInProgressByProduct({
+    //   limit: tableFilterCustomInProgressBP.itemsPerPage,
+    //   offset: (tableFilterCustomInProgressBP.page - 1) * tableFilterCustomInProgressBP.itemsPerPage,
+    //   search: tableFilterCustomInProgressBP.search,
+    //   filter_by: tableFilterCustomInProgressBP.filterBy,
+    // }),
+    query: async () => {
+      const limit = tableFilterCustomInProgressBP.itemsPerPage === -1 
+        ? undefined 
+        : tableFilterCustomInProgressBP.itemsPerPage
+
+      const offset = limit 
+        ? (tableFilterCustomInProgressBP.page - 1) * limit
+        : 0
+
+      return await getCustomInProgressByProduct({
+        limit,
+        offset,
+        search: tableFilterCustomInProgressBP.search,
+        filter_by: tableFilterCustomInProgressBP.filterBy,
+      })
+    }
   })
   
   const customInProgressBPHeader: VDataTable['$props']['headers'] = [
